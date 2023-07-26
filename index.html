@@ -1,1 +1,156 @@
-<h1>Hello!</h1>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title of the document</title>
+    <style>
+
+      .flex {
+        width: 500px;
+        height: 80px;
+        line-height: 80px;
+        background-color: #eeeeee;
+        position: absolute;
+        top: 65%;
+        left: 20%;
+        margin: -25px 0 0 -150px;
+      }
+      .flex ul {
+        display: flex;
+        padding: 0;
+        margin: 0;
+        box-shadow: 0 10px 20px 0 #cccccc;
+      }
+      .flex ul li {
+        flex: 1;
+        list-style: none;
+        text-align: center;
+        position: relative;
+        font-size: 20px;
+        font-weight: bold;
+        transition: 0.3s ease;
+        cursor: pointer;
+        user-select: none;
+      }
+      .flex ul li:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+        color: #65bcc9;
+      }
+      .flex ul li:hover:nth-of-type(2) ~ .bar {
+        left: 20%;
+      }
+      .flex ul li:hover:nth-of-type(3) ~ .bar {
+        left: 40%;
+      }
+      .flex ul li:hover:nth-of-type(4) ~ .bar {
+        left: 60%;
+      }
+      .flex ul li:hover:nth-of-type(5) ~ .bar {
+        left: 80%;
+      }
+      .flex ul .bar {
+        width: 20%;
+        background-color: #2696a6;
+        height: 5px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        transition: 0.3s ease;
+      }
+      
+      .scene {
+        display: none;
+      }
+      
+      .scene.active {
+        display: block;
+      }
+    </style>
+    <script src="mapdata.js"></script>
+    <script src="usmap.js"></script>
+  </head>
+  <body>
+    <div class="flex">
+      <ul>
+        <li id="page1">1</li>
+        <li id="page2">2</li>
+        <li id="page3">3</li>
+        <li id="page4">4</li>
+        <li id="page5">5</li>
+        <div class="bar"></div>
+      </ul>
+    </div>
+    
+    <div id="scenes">
+      <div id="scene1" class="scene active">
+        <h1>COVID Deaths</h1>
+        <p>This is the first scene.</p>
+        <div style="max-width: 600px" class="centered"> <!-- Keep map above fold -->
+        <div id="map"></div>
+        </div>
+      </div>
+      </div>
+      
+      <div id="scene2" class="scene">
+        <h1>Scene 2</h1>
+        <p>This is the second scene.</p>
+      </div>
+      
+      <div id="scene3" class="scene">
+        <h1>Scene 3</h1>
+        <p>This is the third scene.</p>
+      </div>
+      
+      <div id="scene4" class="scene">
+        <h1>Scene 4</h1>
+        <p>This is the fourth scene.</p>
+      </div>
+      
+      <div id="scene5" class="scene">
+        <h1>Scene 5</h1>
+        <p>This is the fifth scene.</p>
+      </div>
+    </div>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      // Define the scenes
+      var scenes = [
+        "scene1",
+        "scene2",
+        "scene3",
+        "scene4",
+        "scene5"
+      ];
+      
+      // Define the pagination elements
+      var pagination = d3.selectAll(".flex ul li");
+      
+      // Define the active page
+      var activePage = 1;
+      
+      // Function to show the active scene and update the pagination
+      function showActiveScene() {
+        // Hide all scenes
+        d3.selectAll(".scene").classed("active", false);
+        
+        // Show the active scene
+        d3.select("#" + scenes[activePage - 1]).classed("active", true);
+      }
+      
+      // Add click event listeners to the pagination elements
+      pagination.on("click", function() {
+        // Get the page number
+        var pageNumber = +d3.select(this).text();
+        
+        // Update the active page
+        activePage = pageNumber;
+        
+       // Show the active scene and update the pagination
+        showActiveScene();
+      });
+      
+      // Show the initial scene and pagination
+      showActiveScene();
+    </script>
+  </body>
+</html>
