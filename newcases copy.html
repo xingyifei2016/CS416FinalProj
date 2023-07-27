@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  svg {
+  width: 60%;
+  height: 60%;
+}
+text {
+  font-family: lato;
+  font-size: 10px;
+  fill: #333333;
+}
+.grid path {
+  stroke-width: 0;
+  stroke: #333333;
+}
+.grid .tick line {
+  stroke: #333333;
+  stroke-width: 0.3px;
+  stroke-opacity: 0.3;
+}
+text.chart-title {
+  font-size: 14px;
+  font-weight: bold;
+  fill:#222222
+}
+text.chart-label {
+  font-size: 10px;
+  font-weight: 400;
+  fill: #999999;
+}
+text.chart-source {
+  font-size: 8px;
+  fill: #999999;
+}
+text.copyright {
+  font-size: 8px;
+  fill: #999999;
+}
+.tooltip {
+  background-color: #ffffff;
+  font-family: lato;
+  font-size: 11px;
+  padding: 4px;
+  color: #666666;
+  border: none;
+  box-shadow: 0px 0px 3px 0px #E6E6E6;
+}
+.legend{
+  font-size: 10px;
+}
+</style>
+<!-- Include d3 library -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<!-- Create a container to host the chart -->
+<div id="viz_container"></div>
+
+<script>// set the dimensions and margins of the graph
+const margin = {top: 100, right: 20, bottom: 50, left: 190};
+const width = 450 - margin.left - margin.right;
+const height = 350 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+const svg = d3.select("#viz_container")
+  .append("svg")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("viewBox", "0 0 450 350")
+    .attr("preserveAspectRatio", "xMinYMin")
+  .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+// parse the Data
+d3.csv("bar_grouped.csv")
+.then(function(data){
+
+const sumbyRegionYear = d3.rollups(data, v => d3.sum(v, d => d.asylum_application), d => d.region, d => d.year)
+
+const regionKey = Array.from(sumbyRegionYear).map(d => d[0])
+const yearKeys = Array.from(Array.from(sumbyRegionYear)[0][1]).map(d=>d[0])
+const regionKeys = regionKey.sort(d3.ascending)
+
+// x scale and Axis
+const xScale = d3.scaleLinear()
+    .domain([0, d3.max(data.map(d => d.asylum_application))]).nice()
+    .range([0, width]);
+svg
+  .append('g')
+  .attr("transform", "translate(0, "+ height +")")
+  .call(d3.axisBottom(xScale).tickSize(0).ticks(5).tickPadding(6).tickFormat(d3.format(".1s")))
+  .call(d => d.select(".domain").remove());
+
+// y scale and Axis
+const yScale = d3.scaleBand()
+  .domain(regionKeys)
+  .range([0, height])
+  .padding(.2);
+svg
+  .append('g')
+  .call(d3.axisLeft(yScale).tickSize(0).tickPadding(8));
+
+// set subgroup sacle
+const ySubgroups = d3.scaleBand()
+  .domain(yearKeys)
+  .range([0, yScale.bandwidth()])
+  .padding([0.05])
+
+// color palette
+const color = d3.scaleOrdinal()
+  .domain(yearKeys)
+  .range(['#0072BC','#8EBEFF'])
+
+// set vertical grid line
+const GridLine = () => d3.axisBottom().scale(xScale);
+svg
+  .append("g")
+    .attr("class", "grid")
+  .call(GridLine()
+    .tickSize(height,0,0)
+    .tickFormat("")
+    .ticks(6)
+);
+
+// create a tooltip
+const tooltip = d3.select("body")
+  .append("div")
+    .attr("id", "chart")
+    .attr("class", "tooltip");
+
+// tooltip events
+const mouseover = function(d) {
+    tooltip
+      .style("opacity", .8)
+    d3.select(this)
+      .style("opacity", .5)
+}
+const mousemove = function(event, d) {
+  const formater =  d3.format(",")
+    tooltip
+      .html(formater(d[1]))
+      .style("top", event.pageY - 10 + "px")
+      .style("left", event.pageX + 10 + "px");
+}
+const mouseleave = function(d) {
+    tooltip
+      .style("opacity", 0)
+    d3.select(this)
+      .style("opacity", 1)
+}
+
+// create bars
+bars = svg.append("g")
+  .selectAll("g")
+  .data(sumbyRegionYear)
+  .join("g")
+     .attr("transform", d => "translate(0, " + yScale(d[0]) +")")
+  .selectAll("rect")
+  .data(d => { return d[1] })
+  .join("rect")
+     .attr("x", xScale(0))
+     .attr("y", d => ySubgroups(d[0]))
+     .attr("width", d => xScale(d[1]))
+     .attr("height", ySubgroups.bandwidth())
+     .attr("fill", d=>color(d[0]))
+  .on("mouseover", mouseover)
+  .on("mousemove", mousemove)
+  .on("mouseleave", mouseleave);
+
+// set title
+svg
+  .append("text")
+    .attr("class", "chart-title")
+    .attr("x", -(margin.left)*0.7)
+    .attr("y", -(margin.top)/1.5)
+    .attr("text-anchor", "start")
+  .text("Individual asylum applications registred by region | 2019-2020")
+
+// set Y axis label
+svg
+  .append("text")
+    .attr("class", "chart-label")
+    .attr("x", width/2)
+    .attr("y", height+margin.bottom/2)
+    .attr("text-anchor", "middle")
+  .text("Displaced population")
+
+
+//set legend
+svg
+.append("rect")
+    .attr("x", -(margin.left)*0.7)
+    .attr("y", -(margin.top/2))
+    .attr("width", 13)
+    .attr("height", 13)
+    .style("fill", "#0072BC");
+svg
+    .append("text")
+        .attr("class", "legend")
+        .attr("x", -(margin.left)*0.7+20)
+        .attr("y", -(margin.top/2.5))
+    .text("2019")
+svg
+    .append("rect")
+        .attr("x", -(margin.left)*0.7+60)
+        .attr("y", -(margin.top/2))
+        .attr("width", 13)
+        .attr("height", 13)
+        .style("fill", "#8EBEFF")
+svg
+    .append("text")
+        .attr("class", "legend")
+        .attr("x", -(margin.left)*0.7+80)
+        .attr("y", -(margin.top/2.5))
+    .text("2020")
+})</script>

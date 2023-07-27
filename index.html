@@ -3,6 +3,46 @@
   <head>
     <title>Title of the document</title>
     <style>
+      .slidecontainer {
+        width: 100%;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .slider {
+        -webkit-appearance: none;
+        width: 30%;
+        height: 25px;
+        position: absolute;
+        left: 35%;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+      }
+
+      .slider:hover {
+        opacity: 1;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #000000;
+        cursor: pointer;
+      }
+
+      .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #04AA6D;
+        cursor: pointer;
+      }
 
       .flex {
         width: 500px;
@@ -11,7 +51,7 @@
         background-color: #eeeeee;
         position: absolute;
         top: 65%;
-        left: 20%;
+        left: 45%;
         margin: -25px 0 0 -150px;
       }
       .flex ul {
@@ -64,8 +104,67 @@
       .scene.active {
         display: block;
       }
+
+      .container {
+        width: 100%;
+        height: 10vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      pl {
+        text-align: center;
+      }
+
+      .columns {
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .column {
+        flex: 1;
+        margin-right: 20px; /* Add some space between columns */
+      }
+
+      ul {
+        list-style-type: square;
+      }
+
+      ul li.hidden {
+        list-style: none;
+      }
+
+      .circlelow {
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        border-radius: 50%;
+        background-color: #008000;
+      }
+
+      .circlemed {
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        border-radius: 50%;
+        background-color: #FFBF00;
+      }
+
+      .circlehigh {
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        border-radius: 50%;
+        background-color: #FF0000;
+      }
+
+
     </style>
-    <script src="mapdata.js"></script>
+    <script src="mapdata1.js"></script>
     <script src="usmap.js"></script>
   </head>
   <body>
@@ -82,36 +181,473 @@
     
     <div id="scenes">
       <div id="scene1" class="scene active">
-        <h1>COVID Deaths</h1>
-        <p>This is the first scene.</p>
-        <div style="max-width: 600px" class="centered"> <!-- Keep map above fold -->
-        <div id="map"></div>
+        <h1>COVID Cases and Death Distribution</h1>
+        <p>This is an overview of the distribution of COVID cases on the U.S. map as of Jan. 2021.</p>
+        <div style="max-width: 700px" class="centered"> <!-- Keep map above fold -->
+        <div id="map"> </div>
         </div>
-      </div>
+
+        <div style = "position:relative; left:750px; top:-450px; width: 800px;">
+          <p>The COVID-19 pandemic has continued to impact the United States throughout 2021, with various waves of infections and new variants of the virus emerging. Here are some key developments related to COVID-19 in the United States in 2021:
+            <ul>
+              <li>Vaccination rollout: The United States began vaccinating its population against COVID-19 in late 2020, and the rollout continued throughout 2021. The Pfizer-BioNTech and Moderna vaccines were authorized for emergency use in December 2020, and the Johnson & Johnson vaccine was authorized in February 2021. By mid-2021, more than half of the US population had received at least one dose of a COVID-19 vaccine.</li>
+
+              <li>Delta variant: In early 2021, a new variant of the COVID-19 virus emerged in India, known as the Delta variant. The Delta variant is more transmissible than earlier variants, and has caused a surge in cases in the United States in mid-2021, particularly in areas with low vaccination rates.</li>
+
+              <li>Mask mandates: Throughout 2021, there has been ongoing debate over mask mandates and other public health measures aimed at slowing the spread of COVID-19. Some states and localities have implemented mask mandates or other restrictions, while others have lifted restrictions and encouraged businesses to reopen.</li>
+
+              <li>Economic impact: The COVID-19 pandemic has had a significant impact on the US economy throughout 2021, with many businesses closing or reducing operations and unemployment rates remaining high. The federal government implemented several stimulus packages in an effort to support individuals and businesses affected by the pandemic.</li>
+
+              <li>School reopenings: Throughout the pandemic, there has been ongoing debate over whether and how to reopen schools. In 2021, many schools reopened for in-person learning, although there have been occasional outbreaks of COVID-19 in schools and ongoing concerns about the safety of students and teachers.</li>
+
+            </ul>
+
+            Overall, the COVID-19 pandemic has continued to impact the United States in a variety of ways in 2021, with ongoing efforts to vaccinate the population and slow the spread of the virus.
+
+          </p>
+        </div>
+        
       </div>
       
       <div id="scene2" class="scene">
-        <h1>Scene 2</h1>
-        <p>This is the second scene.</p>
+        <h1>Activities associated with risk of contracting COVID</h1>
+        <div class="slidecontainer">
+          <input type="range" min="1" max="100" value="0" class="slider" id="myRange">
+          <div class="container">
+          <pl><span id="demo"></span></pl>
+        </div>
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <p id="low-risk" class="hidden">
+              <span class="circlelow">Takeout Food</span>
+              <span class="circlelow">Outdoor Exercise</span>
+              <span class="circlelow">Gas/petrol station</span>
+              <span class="circlelow">Golf</span>
+              <span class="circlelow">Bathroom Use</span>
+              <span class="circlelow">Playdates</span>
+              <span class="circlelow">Camping</span>
+              <span class="circlelow">Beach</span>
+              <span class="circlelow">Outdoor Dining</span>
+              <span class="circlelow">Driving</span>
+              <span class="circlelow">Taking a walk</span>
+              <span class="circlelow">Grocery shopping</span>
+              <span class="circlelow">Seeing a doctor</span>
+              <br>
+              Low-risk activities for COVID-19 generally can be done alone or with members of your household, without coming into close contact with people outside of your household.
+              They typically take place in outdoor or well-ventilated indoor spaces, where the risk of transmission is lower than in crowded or poorly ventilated spaces.
+              They also involve minimal physical contact with surfaces or objects that may be contaminated with the virus.
+              They do not involve high-intensity physical activity, which can increase the risk of transmitting the virus through respiratory droplets.
+              They can be easily modified to maintain physical distancing and other recommended safety measures, such as wearing masks or avoiding large gatherings.
+            </p>
+          </div>
+          <div class="column">
+            <p id="medium-risk" class="hidden">
+                <span class="circlemed">Staying at a hotel</span>
+                <span class="circlemed">Small backyard barbecue</span>
+                <span class="circlemed">Small outdoor picnic</span>
+                <span class="circlemed">Use a public restroom</span>
+                <span class="circlemed">Visit a mall</span>
+                <span class="circlemed">Small dinner party (indoors)</span>
+                <span class="circlemed">Public pool</span>
+                <span class="circlemed">Getting a haircut</span>
+                <span class="circlemed">Casino</span>
+                <span class="circlemed">Driving</span>
+                <span class="circlemed">Bowling</span>
+                <span class="circlemed">Exercising at a gym</span>
+                <span class="circlemed">Airplane</span>
+              <br>
+              Medium-risk activities for COVID-19 generally involve close contact with people outside of your household, but for a shorter duration of time and in a larger, well-ventilated space.
+              They also take place in indoor spaces, where the risk of transmission is higher than in outdoor spaces.
+              They may involve physical activity that increases the risk of transmitting the virus through respiratory droplets, such as singing, shouting, or playing sports.
+              They may also involve shared objects or surfaces, such as equipment or utensils, that can be contaminated with the virus.
+              They may require some modification of physical distancing and other recommended safety measures, such as wearing masks or avoiding large gatherings.
+          </p>
+          </div>
+          <div class="column">
+            <p id="high-risk" class="hidden">
+              <span class="circlehigh">Attend a wedding</span>
+              <span class="circlehigh">Hug or shake hands</span>
+              <span class="circlehigh">Stop wearing a mask</span>
+              <span class="circlehigh">Amusement park</span>
+              <span class="circlehigh">Buffet</span>
+              <span class="circlehigh">See a concert</span>
+              <span class="circlehigh">Indoor party</span>
+              <span class="circlehigh">Sports stadium</span>
+              <span class="circlehigh">Going to a church</span>
+              <span class="circlehigh">Indoor bar</span>
+              <span class="circlehigh">Nightclub</span>
+              <span class="circlehigh">Not washing hand</span>
+              <br>
+              High-risk activities for COVID-19 are those that have a greater likelihood of transmitting the virus and are associated with a higher risk of infection. High-risk activities typically involve close contact with other people who may be infected with the virus. This can occur in crowded indoor spaces, or in situations where people are in close proximity to each other for an extended period of time. Indoor spaces with poor ventilation are more likely to allow the virus to spread, as the air is not being circulated or filtered effectively. This can include crowded indoor areas, such as bars or nightclubs, or poorly ventilated public transportation. High-risk activities often involve large groups of people, such as concerts, sporting events, or weddings. These events can be difficult to manage in terms of physical distancing and mask-wearing, and can increase the risk of transmission. Activities that involve sharing objects or equipment, such as sports equipment or musical instruments, can increase the risk of transmission if the objects are not properly cleaned or disinfected.
+            </p>
+          </div>
+        </div>
+        <script>
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = "Low Risk";
+
+        const lowText = document.getElementById("low-risk");
+        const medText = document.getElementById("medium-risk");
+        const highText = document.getElementById("high-risk");
+        lowText.classList.remove("hidden");
+
+
+
+
+        slider.oninput = function() {
+          if (this.value <= 33) {
+            output.innerHTML = "Low Risk";
+            lowText.classList.remove("hidden");
+            medText.classList.add("hidden");
+            highText.classList.add("hidden");
+          } else if (this.value <=66) {
+            output.innerHTML = "Medium Risk";
+            lowText.classList.add("hidden");
+            medText.classList.remove("hidden");
+            highText.classList.add("hidden");
+          } else {
+            output.innerHTML = "High Risk";
+            lowText.classList.add("hidden");
+            medText.classList.add("hidden");
+            highText.classList.remove("hidden");
+          }
+
+
+        }
+        </script>
       </div>
       
       <div id="scene3" class="scene">
-        <h1>Scene 3</h1>
-        <p>This is the third scene.</p>
+        <h1>Global daily deaths (2020)</h1>
+        <script src='https://d3js.org/d3.v5.min.js'></script>
+        <style> 
+          ap {
+            font-family: Arial, sans-serif; /* change font */
+            text-decoration: none; /* remove underline */
+            width: 400px; /* set width */
+            height: 50px; /* set height */
+            background-color: orange; /* add background color */
+            color: white; /* add text color */
+            text-align: center; /* center text horizontally */
+            line-height: 50px; /* center text vertically */
+            transform: translateX(150%);
+            bottom: 300;
+            position: fixed;
+          }
+        </style>
+        <body>
+        <ap>Daily deaths have increasing trend for entire 2020</ap>
+        <svg width=300 height=300 id="svg1">
+        </svg>
+        <script>
+
+
+        cases = [17, 110, 313, 648, 1131, 1790, 2375, 2815, 3132, 3615, 5034, 8184, 15301, 29516, 52290, 84439, 122373, 159995, 197203, 231265, 265145, 296600, 325680, 354792, 381253, 405527, 430864, 457370, 482951, 508598, 538946, 564783, 590505, 617327, 646332, 674859, 704138, 738694, 770106, 800805, 833928, 866603, 896987, 926685, 958484, 987400, 1013352, 1041050, 1069741, 1095186, 1119837, 1147556, 1175301, 1201160, 1230311, 1262180, 1293432, 1328239, 1373171, 1417763, 1465636, 1518969, 1575838, 1629565, 1684942, 1747269, 1807421, 1866852, 1921079, 1987480, 2047456, 2113101, 2191225]
+        date = ['Jan 22, 2020', 'Jan 27, 2020', 'Feb 01, 2020', 'Feb 06, 2020', 'Feb 11, 2020', 'Feb 16, 2020', 'Feb 21, 2020', 'Feb 26, 2020', 'Mar 02, 2020', 'Mar 07, 2020', 'Mar 12, 2020', 'Mar 17, 2020', 'Mar 22, 2020', 'Mar 27, 2020', 'Apr 01, 2020', 'Apr 06, 2020', 'Apr 11, 2020', 'Apr 16, 2020', 'Apr 21, 2020', 'Apr 26, 2020', 'May 01, 2020', 'May 06, 2020', 'May 11, 2020', 'May 16, 2020', 'May 21, 2020', 'May 26, 2020', 'May 31, 2020', 'Jun 05, 2020', 'Jun 10, 2020', 'Jun 15, 2020', 'Jun 20, 2020', 'Jun 25, 2020', 'Jun 30, 2020', 'Jul 05, 2020', 'Jul 10, 2020', 'Jul 15, 2020', 'Jul 20, 2020', 'Jul 25, 2020', 'Jul 30, 2020', 'Aug 04, 2020', 'Aug 09, 2020', 'Aug 14, 2020', 'Aug 19, 2020', 'Aug 24, 2020', 'Aug 29, 2020', 'Sep 03, 2020', 'Sep 08, 2020', 'Sep 13, 2020', 'Sep 18, 2020', 'Sep 23, 2020', 'Sep 28, 2020', 'Oct 03, 2020', 'Oct 08, 2020', 'Oct 13, 2020', 'Oct 18, 2020', 'Oct 23, 2020', 'Oct 28, 2020', 'Nov 02, 2020', 'Nov 07, 2020', 'Nov 12, 2020', 'Nov 17, 2020', 'Nov 22, 2020', 'Nov 27, 2020', 'Dec 02, 2020', 'Dec 07, 2020', 'Dec 12, 2020', 'Dec 17, 2020', 'Dec 22, 2020', 'Dec 27, 2020', 'Jan 01, 2021', 'Jan 06, 2021', 'Jan 11, 2021', 'Jan 16, 2021']
+
+        onMouseOut = function(d, i) {
+          d3.select(this).attr('style', 'fill: steelblue;');
+          d3.select("#toptext").text(`Daily deaths - global: ${0}`);
+        }
+
+        onMouseOver = function(d, i) {
+          d3.select(this).attr('style', 'fill: orange;');
+          d3.select("#toptext").text(`Daily deaths - global: ${cases[i]}`);
+        }
+
+
+        var width = 1000;
+        var height = 400;
+        var margin = 500;
+        var svg1 = d3.select('#scene3').select("#svg1")
+                      .attr("width", width + margin + margin)
+                      .attr("height", height + margin + margin)
+                      .append("g")
+                      .attr("transform", "translate(300,10)");
+
+        const text = svg1
+            .append('text')
+            .attr("id", 'toptext')
+            .attr("x", width - 300)
+            .attr("y", 80)
+            .attr("dx", "-19em")
+            .attr("dy", ".15em")
+            .attr("font-family", "sans-serif")
+            .text("Daily deaths - global: 0");
+
+        // const text = svg1
+        //     .append('text')
+        //     .attr("id", 'toptext')
+        //     .attr("x", width - 300)
+        //     .attr("y", 80)
+        //     .attr("dx", "-19em")
+        //     .attr("dy", ".15em")
+        //     .attr("font-family", "sans-serif")
+        //     .text("Daily cases has increase trend for 2021.");
+
+        var x = d3.scaleBand()
+                    .domain(date)
+                    .range([0, width]);
+        var y = d3.scaleLinear()
+                    .domain([0, d3.max(cases)])
+                    .range([height, 0]);
+
+        svg1.selectAll("rect")
+             .data(cases)
+             .enter()
+             .append("rect")
+             .attr("x", function(d, i) { return x.bandwidth()*i; })
+             .attr("y", function(d) { return y(d); })
+             .attr("width", x.bandwidth())
+             .attr("height", function(d) { return height - y(d); })
+             .attr('style', 'fill: steelblue;')
+             .on('mouseover', onMouseOver)
+             .on('mouseout', onMouseOut);
+
+        d3.select("#svg1").append("g").attr("transform", "translate(300,10)").call(d3.axisLeft(y));
+
+        d3.select("#svg1").append("g").attr("transform", "translate(300,410)").call(d3.axisBottom(x).ticks(50)).selectAll("text")  
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-65)");
+        </script>
+        </body>
       </div>
       
       <div id="scene4" class="scene">
-        <h1>Scene 4</h1>
-        <p>This is the fourth scene.</p>
+
       </div>
       
       <div id="scene5" class="scene">
         <h1>Scene 5</h1>
         <p>This is the fifth scene.</p>
+        <style>
+        .grid path {
+          stroke-width: 0;
+          stroke: #333333;
+        }
+        .grid .tick line {
+          stroke: #333333;
+          stroke-width: 0.3px;
+          stroke-opacity: 0.3;
+        }
+        text.chart-title {
+          font-size: 14px;
+          font-weight: bold;
+          fill:#222222
+        }
+        text.chart-label {
+          font-size: 10px;
+          font-weight: 400;
+          fill: #999999;
+        }
+        text.chart-source {
+          font-size: 8px;
+          fill: #999999;
+        }
+        text.copyright {
+          font-size: 8px;
+          fill: #999999;
+        }
+        .tooltip {
+          background-color: #ffffff;
+          font-family: lato;
+          font-size: 11px;
+          padding: 4px;
+          color: #666666;
+          border: none;
+          box-shadow: 0px 0px 3px 0px #E6E6E6;
+        }
+        .legend{
+          font-size: 10px;
+        }</style>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <!-- Create a container to host the chart -->
+        <div id="viz_container"></div>
       </div>
     </div>
     
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src='https://d3js.org/d3.v5.min.js'>
+      // set the dimensions and margins of the graph
+const margin = {top: 100, right: 20, bottom: 50, left: 190};
+const width = 450 - margin.left - margin.right;
+const height = 350 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+const svg = d3.select("#viz_container")
+  .append("svg")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("viewBox", "0 0 450 350")
+    .attr("preserveAspectRatio", "xMinYMin")
+  .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+// parse the Data
+d3.csv("https://raw.githubusercontent.com/GDS-ODSSS/unhcr-dataviz-platform/master/data/comparison/bar_grouped.csv")
+.then(function(data){
+
+const sumbyRegionYear = d3.rollups(data, v => d3.sum(v, d => d.asylum_application), d => d.region, d => d.year)
+
+const regionKey = Array.from(sumbyRegionYear).map(d => d[0])
+const yearKeys = Array.from(Array.from(sumbyRegionYear)[0][1]).map(d=>d[0])
+const regionKeys = regionKey.sort(d3.ascending)
+
+// x scale and Axis
+const xScale = d3.scaleLinear()
+    .domain([0, d3.max(data.map(d => d.asylum_application))]).nice()
+    .range([0, width]);
+svg
+  .append('g')
+  .attr("transform", "translate(0, "+ height +")")
+  .call(d3.axisBottom(xScale).tickSize(0).ticks(5).tickPadding(6).tickFormat(d3.format(".1s")))
+  .call(d => d.select(".domain").remove());
+
+// y scale and Axis
+const yScale = d3.scaleBand()
+  .domain(regionKeys)
+  .range([0, height])
+  .padding(.2);
+svg
+  .append('g')
+  .call(d3.axisLeft(yScale).tickSize(0).tickPadding(8));
+
+// set subgroup sacle
+const ySubgroups = d3.scaleBand()
+  .domain(yearKeys)
+  .range([0, yScale.bandwidth()])
+  .padding([0.05])
+
+// color palette
+const color = d3.scaleOrdinal()
+  .domain(yearKeys)
+  .range(['#0072BC','#8EBEFF'])
+
+// set vertical grid line
+const GridLine = () => d3.axisBottom().scale(xScale);
+svg
+  .append("g")
+    .attr("class", "grid")
+  .call(GridLine()
+    .tickSize(height,0,0)
+    .tickFormat("")
+    .ticks(6)
+);
+
+// create a tooltip
+const tooltip = d3.select("body")
+  .append("div")
+    .attr("id", "chart")
+    .attr("class", "tooltip");
+
+// tooltip events
+const mouseover = function(d) {
+    tooltip
+      .style("opacity", .8)
+    d3.select(this)
+      .style("opacity", .5)
+}
+const mousemove = function(event, d) {
+  const formater =  d3.format(",")
+    tooltip
+      .html(formater(d[1]))
+      .style("top", event.pageY - 10 + "px")
+      .style("left", event.pageX + 10 + "px");
+}
+const mouseleave = function(d) {
+    tooltip
+      .style("opacity", 0)
+    d3.select(this)
+      .style("opacity", 1)
+}
+
+// create bars
+bars = svg.append("g")
+  .selectAll("g")
+  .data(sumbyRegionYear)
+  .join("g")
+     .attr("transform", d => "translate(0, " + yScale(d[0]) +")")
+  .selectAll("rect")
+  .data(d => { return d[1] })
+  .join("rect")
+     .attr("x", xScale(0))
+     .attr("y", d => ySubgroups(d[0]))
+     .attr("width", d => xScale(d[1]))
+     .attr("height", ySubgroups.bandwidth())
+     .attr("fill", d=>color(d[0]))
+  .on("mouseover", mouseover)
+  .on("mousemove", mousemove)
+  .on("mouseleave", mouseleave);
+
+// set title
+svg
+  .append("text")
+    .attr("class", "chart-title")
+    .attr("x", -(margin.left)*0.7)
+    .attr("y", -(margin.top)/1.5)
+    .attr("text-anchor", "start")
+  .text("Individual asylum applications registred by region | 2019-2020")
+
+// set Y axis label
+svg
+  .append("text")
+    .attr("class", "chart-label")
+    .attr("x", width/2)
+    .attr("y", height+margin.bottom/2)
+    .attr("text-anchor", "middle")
+  .text("Displaced population")
+
+// set source
+svg
+  .append("text")
+    .attr("class", "chart-source")
+    .attr("x", -(margin.left)*0.7)
+    .attr("y", height + margin.bottom*0.7)
+    .attr("text-anchor", "start")
+  .text("Source: UNHCR Refugee Data Finder")
+
+// set copyright
+svg
+  .append("text")
+    .attr("class", "copyright")
+    .attr("x", -(margin.left)*0.7)
+    .attr("y", height + margin.bottom*0.9)
+    .attr("text-anchor", "start")
+  .text("©UNHCR, The UN Refugee Agency")
+
+//set legend
+svg
+.append("rect")
+    .attr("x", -(margin.left)*0.7)
+    .attr("y", -(margin.top/2))
+    .attr("width", 13)
+    .attr("height", 13)
+    .style("fill", "#0072BC");
+svg
+    .append("text")
+        .attr("class", "legend")
+        .attr("x", -(margin.left)*0.7+20)
+        .attr("y", -(margin.top/2.5))
+    .text("2019")
+svg
+    .append("rect")
+        .attr("x", -(margin.left)*0.7+60)
+        .attr("y", -(margin.top/2))
+        .attr("width", 13)
+        .attr("height", 13)
+        .style("fill", "#8EBEFF")
+svg
+    .append("text")
+        .attr("class", "legend")
+        .attr("x", -(margin.left)*0.7+80)
+        .attr("y", -(margin.top/2.5))
+    .text("2020")
+})
+    </script>
     <script>
       // Define the scenes
       var scenes = [
@@ -144,6 +680,10 @@
         
         // Update the active page
         activePage = pageNumber;
+
+        if (pageNumber == 4) {
+          window.location.href = "newcases.html";
+        }
         
        // Show the active scene and update the pagination
         showActiveScene();

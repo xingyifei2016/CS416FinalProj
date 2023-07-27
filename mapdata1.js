@@ -73,21 +73,21 @@ var simplemaps_usmap_mapdata={
   state_specific: {
     HI: {
       name: "Hawaii",
-      description: "20",
+      description:"Confirmed: 22397 \n Deaths: 289",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     AK: {
       name: "Alaska",
-      description: "default",
+      description:"Confirmed: 47019 \n Deaths: 206",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     FL: {
       name: "Florida",
-      description: "default",
+      description:"Confirmed: 1323315 \n Deaths: 21673",
       color: "default",
       hover_color: "default",
       url: "default",
@@ -95,175 +95,175 @@ var simplemaps_usmap_mapdata={
     },
     NH: {
       name: "New Hampshire",
-      description: "default",
+      description:"Confirmed: 45932 \n Deaths: 759",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     VT: {
       name: "Vermont",
-      description: "default",
+      description:"Confirmed: 7412 \n Deaths: 136",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     ME: {
       name: "Maine",
-      description: "default",
+      description:"Confirmed: 24902 \n Deaths: 352",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     RI: {
       name: "Rhode Island",
-      description: "default",
+      description:"Confirmed: 87949 \n Deaths: 1944",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     NY: {
       name: "New York",
-      description: "default",
+      description:"Confirmed: 995816 \n Deaths: 37973",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     PA: {
       name: "Pennsylvania",
-      description: "default",
+      description:"Confirmed: 657071 \n Deaths: 16245",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     NJ: {
       name: "New Jersey",
-      description: "default",
+      description:"Confirmed: 535043 \n Deaths: 19160",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     DE: {
       name: "Delaware",
-      description: "default",
+      description:"Confirmed: 58064 \n Deaths: 1065",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     MD: {
       name: "Maryland",
-      description: "default",
+      description:"Confirmed: 280219 \n Deaths: 5942",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     VA: {
       name: "Virginia",
-      description: "default",
+      description:"Confirmed: 354766 \n Deaths: 5081",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     WV: {
       name: "West Virginia",
-      description: "default",
+      description:"Confirmed: 87820 \n Deaths: 1361",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     OH: {
       name: "Ohio",
-      description: "default",
+      description:"Confirmed: 700380 \n Deaths: 13766",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     IN: {
       name: "Indiana",
-      description: "default",
+      description:"Confirmed: 517773 \n Deaths: 9468",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     IL: {
       name: "Illinois",
-      description: "default",
+      description:"Confirmed: 963389 \n Deaths: 17978",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     CT: {
       name: "Connecticut",
-      description: "default",
+      description:"Confirmed: 185708 \n Deaths: 5995",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     WI: {
       name: "Wisconsin",
-      description: "default",
+      description:"Confirmed: 522523 \n Deaths: 5254",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     NC: {
       name: "North Carolina",
-      description: "default",
+      description:"Confirmed: 539545 \n Deaths: 6748",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     DC: {
       name: "District of Columbia",
-      description: "default",
+      description:"Confirmed: 29252 \n Deaths: 788",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     MA: {
       name: "Massachusetts",
-      description: "default",
+      description:"Confirmed: 375178 \n Deaths: 10522",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     TN: {
       name: "Tennessee",
-      description: "default",
+      description:"Confirmed: 592168 \n Deaths: 6955",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     AR: {
       name: "Arkansas",
-      description: "default",
+      description:"Confirmed: 229442 \n Deaths: 3711",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     MO: {
       name: "Missouri",
-      description: "default",
+      description:"Confirmed: 445019 \n Deaths: 5747",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     GA: {
       name: "Georgia",
-      description: "default",
+      description:"Confirmed: 677589 \n Deaths: 10958",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     SC: {
       name: "South Carolina",
-      description: "default",
+      description:"Confirmed: 307507 \n Deaths: 5296",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     KY: {
       name: "Kentucky",
-      description: "default",
+      description:"Confirmed: 265261 \n Deaths: 2623",
       color: "default",
       zoomable: "no",
       hover_color: "default",
@@ -271,161 +271,161 @@ var simplemaps_usmap_mapdata={
     },
     AL: {
       name: "Alabama",
-      description: "default",
+      description:"Confirmed: 365747 \n Deaths: 4872",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     LA: {
       name: "Louisiana",
-      description: "default",
+      description:"Confirmed: 315275 \n Deaths: 7488",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     MS: {
       name: "Mississippi",
-      description: "default",
+      description:"Confirmed: 218386 \n Deaths: 4816",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     IA: {
       name: "Iowa",
-      description: "default",
+      description:"Confirmed: 282980 \n Deaths: 3898",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     MN: {
       name: "Minnesota",
-      description: "default",
+      description:"Confirmed: 415302 \n Deaths: 5382",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     OK: {
       name: "Oklahoma",
-      description: "default",
+      description:"Confirmed: 291209 \n Deaths: 2489",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     TX: {
       name: "Texas",
-      description: "default",
+      description:"Confirmed: 1822635 \n Deaths: 28416",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     NM: {
       name: "New Mexico",
-      description: "default",
+      description:"Confirmed: 144142 \n Deaths: 2502",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     KS: {
       name: "Kansas",
-      description: "default",
+      description:"Confirmed: 229822 \n Deaths: 2892",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     NE: {
       name: "Nebraska",
-      description: "default",
+      description:"Confirmed: 167716 \n Deaths: 1668",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     SD: {
       name: "South Dakota",
-      description: "default",
+      description:"Confirmed: 99164 \n Deaths: 1488",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     ND: {
       name: "North Dakota",
-      description: "default",
+      description:"Confirmed: 92215 \n Deaths: 1316",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     WY: {
       name: "Wyoming",
-      description: "default",
+      description:"Confirmed: 44409 \n Deaths: 438",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     MT: {
       name: "Montana",
-      description: "default",
+      description:"Confirmed: 81555 \n Deaths: 961",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     CO: {
       name: "Colorado",
-      description: "default",
+      description:"Confirmed: 362438 \n Deaths: 5435",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     UT: {
       name: "Utah",
-      description: "default",
+      description:"Confirmed: 276612 \n Deaths: 1269",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     AZ: {
       name: "Arizona",
-      description: "default",
+      description:"Confirmed: 530267 \n Deaths: 9015",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     NV: {
       name: "Nevada",
-      description: "default",
+      description:"Confirmed: 227046 \n Deaths: 3143",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     OR: {
       name: "Oregon",
-      description: "default",
+      description:"Confirmed: 113909 \n Deaths: 1477",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     WA: {
       name: "Washington",
-      description: "default",
+      description:"Confirmed: 246752 \n Deaths: 3461",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     CA: {
       name: "California",
-      description: "default",
+      description:"Confirmed: 2434971 \n Deaths: 26298",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     MI: {
       name: "Michigan",
-      description: "default",
+      description:"Confirmed: 528621 \n Deaths: 13018",
       color: "default",
       hover_color: "default",
       url: "default"
     },
     ID: {
       name: "Idaho",
-      description: "default",
+      description:"Confirmed: 141077 \n Deaths: 1436",
       color: "default",
       hover_color: "default",
       url: "default"
