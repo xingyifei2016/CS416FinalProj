@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  svg {
+  width: 60%;
+  height: 60%;
+}
+text {
+  font-family: lato;
+  font-size: 10px;
+  fill: #333333;
+}
+.grid path {
+  stroke-width: 0;
+  stroke: #333333;
+}
+.grid .tick line {
+  stroke: #333333;
+  stroke-width: 0.3px;
+  stroke-opacity: 0.3;
+}
+text.chart-title {
+  font-size: 14px;
+  font-weight: bold;
+  fill:#222222
+}
+text.chart-label {
+  font-size: 10px;
+  font-weight: 400;
+  fill: #999999;
+}
+text.chart-source {
+  font-size: 8px;
+  fill: #999999;
+}
+text.copyright {
+  font-size: 8px;
+  fill: #999999;
+}
+.tooltip {
+  background-color: #ffffff;
+  font-family: lato;
+  font-size: 11px;
+  padding: 4px;
+  color: #666666;
+  border: none;
+  box-shadow: 0px 0px 3px 0px #E6E6E6;
+}
+.legend{
+  font-size: 10px;
+}
+a {
+    font-family: Arial, sans-serif; /* change font */
+    text-decoration: none; /* remove underline */
+    display: block; /* change position to block to allow width and height adjustments */
+    width: 200px; /* set width */
+    height: 50px; /* set height */
+    background-color: blue; /* add background color */
+    color: white; /* add text color */
+    text-align: center; /* center text horizontally */
+    line-height: 50px; /* center text vertically */
+    transform: translate(350%, 900%);
+    bottom: 30;
+    position: fixed;
+  }
+
+ap {
+            font-family: Arial, sans-serif; /* change font */
+            text-decoration: none; /* remove underline */
+            width: 800px; /* set width */
+            height: 50px; /* set height */
+            color: black; /* add text color */
+            text-align: center; /* center text horizontally */
+            line-height: 15px; /* center text vertically */
+            transform: translate(50%, 1000%);
+            bottom: 800;
+            position: fixed;
+          }
+rect.highlighted {
+  fill: orange;
+}
+</style>
+<!-- Include d3 library -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<!-- Create a container to host the chart -->
+<a href="index.html">Go Back</a>
+<ap>The COVID-19 pandemic, also known as the coronavirus pandemic, is a global pandemic of coronavirus disease 2019 (COVID-19) caused by severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2). The novel virus was first identified in an outbreak in the Chinese city of Wuhan in December 2019. Attempts to contain it there failed, allowing the virus to spread to other areas of Asia and later worldwide. The World Health Organization (WHO) declared the outbreak a public health emergency of international concern (PHEIC) on 30 January 2020, and began referring to it as a pandemic on 11 March 2020. The WHO ended its PHEIC declaration on 5 May 2023, but as of 2 June 2023 continues to refer to it as a pandemic. Prior to this, some countries had already begun to regard COVID-19 as an endemic disease. As of 26 July 2023, the pandemic had caused 768,237,024 cases and 6,951,664 confirmed deaths, ranking it fifth in the deadliest epidemics and pandemics in history.
+
+COVID-19 symptoms range from asymptomatic to deadly, but most commonly include fever, nocturnal cough, and fatigue. Transmission of the virus is often through airborne particles. Mutations have produced many strains (variants) with varying degrees of infectivity and virulence.
+
+COVID-19 vaccines have been widely deployed in various countries since December 2020. Treatments include novel antiviral drugs and symptom control. Common public health mitigation measures during the emergency phase included travel restrictions, lockdowns, business restrictions and closures, workplace hazard controls, mask mandates, quarantines, testing systems, and contact tracing of the infected.
+
+The pandemic has triggered severe social and economic disruption around the world, including the largest global recession since the Great Depression. Widespread supply shortages, including food shortages, were caused by supply chain disruptions and panic buying. Reduced human activity led to an unprecedented decrease in pollution. Educational institutions and public areas were partially or fully closed in many jurisdictions, and events were cancelled or postponed during 2020 and 2021. Many white-collar workers began working from home. Misinformation has circulated through social media and mass media, and political tensions have intensified. The pandemic has raised issues of racial and geographic discrimination, health equity, and the balance between public health imperatives and individual rights. (Taken from Wikipedia)</ap>
+<div id="viz_container"></div>
+
+<script>// set the dimensions and margins of the graph
+const margin = {top: 100, right: 20, bottom: 50, left: 190};
+const width = 450 - margin.left - margin.right;
+const height = 350 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+const svg = d3.select("#viz_container")
+  .append("svg")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("viewBox", "0 0 850 350")
+    .attr("preserveAspectRatio", "xMinYMin")
+  .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+// parse the Data
+d3.csv("https://raw.githubusercontent.com/xingyifei2016/CS416FinalProj/main/world.csv")
+.then(function(data){
+
+const sumbyRegionYear = d3.rollups(data, v => d3.sum(v, d => d.confirmed), d => d.region, d => d.year)
+
+const regionKey = Array.from(sumbyRegionYear).map(d => d[0])
+const yearKeys = Array.from(Array.from(sumbyRegionYear)[0][1]).map(d=>d[0])
+const regionKeys = regionKey.sort(d3.ascending)
+
+// x scale and Axis
+const xScale = d3.scaleLinear()
+    .domain([0, d3.max(data.map(d => d.confirmed))]).nice()
+    .range([0, width]);
+svg
+  .append('g')
+  .attr("transform", "translate(0, "+ height +")")
+  .call(d3.axisBottom(xScale).tickSize(0).ticks(5).tickPadding(6).tickFormat(d3.format(".1s")))
+  .call(d => d.select(".domain").remove());
+
+// y scale and Axis
+const yScale = d3.scaleBand()
+  .domain(regionKeys)
+  .range([0, height])
+  .padding(.2);
+svg
+  .append('g')
+  .call(d3.axisLeft(yScale).tickSize(0).tickPadding(8));
+
+// set subgroup scale
+const ySubgroups = d3.scaleBand()
+  .domain(yearKeys)
+  .range([0, yScale.bandwidth()])
+  .padding([0.05])
+
+// color palette
+const color = d3.scaleOrdinal()
+  .domain(yearKeys)
+  .range(['#0072BC','#8EBEFF', '#6699CC'])
+
+// set vertical grid line
+const GridLine = () => d3.axisBottom().scale(xScale);
+svg
+  .append("g")
+    .attr("class", "grid")
+  .call(GridLine()
+    .tickSize(height,0,0)
+    .tickFormat("")
+    .ticks(6)
+);
+
+// create a tooltip
+const tooltip = d3.select("body")
+  .append("div")
+    .attr("id", "chart")
+    .attr("class", "tooltip");
+
+// tooltip events
+const mouseover = function(d) {
+    tooltip
+      .style("opacity", .8)
+    d3.select(this)
+      .style("opacity", .5)
+}
+const mousemove = function(event, d) {
+  const formater =  d3.format(",")
+    tooltip
+      .html(formater(d[1]))
+      .style("top", event.pageY - 10 + "px")
+      .style("left", event.pageX + 10 + "px");
+}
+const mouseleave = function(d) {
+    tooltip
+      .style("opacity", 0)
+    d3.select(this)
+      .style("opacity", 1)
+}
+
+// create bars
+bars = svg.append("g")
+  .selectAll("g")
+  .data(sumbyRegionYear)
+  .join("g")
+     .attr("transform", d => "translate(0, " + yScale(d[0]) +")")
+  .selectAll("rect")
+  .data(d => { return d[1] })
+  .join("rect")
+     .attr("x", xScale(0))
+     .attr("y", d => ySubgroups(d[0]))
+     .attr("width", d => xScale(d[1]))
+     .attr("height", ySubgroups.bandwidth())
+     .attr("fill", d=>color(d[0]))
+     .classed('highlight', true)
+  .on("mouseover", mouseover)
+  .on("mousemove", mousemove)
+  .on("mouseleave", mouseleave);
+
+// set title
+svg
+  .append("text")
+    .attr("class", "chart-title")
+    .attr("x", -(margin.left)*0.7)
+    .attr("y", -(margin.top)/1.5)
+    .attr("text-anchor", "start")
+  .text("COVID Global Confirmed Cases | 2020-2022")
+
+// set Y axis label
+svg
+  .append("text")
+    .attr("class", "chart-label")
+    .attr("x", 300)
+    .attr("y", height+margin.bottom/2)
+    .attr("text-anchor", "middle")
+  .text("Confirmed Cases")
+
+
+const hoverLegend2020 = function(event, d) {
+  const yearBars = svg.selectAll('.highlight')
+    .filter(e => e[0] !== '2020');
+
+  d3.select(this)
+      .style("opacity", .5)
+
+  yearBars.style("opacity", .1);
+}
+
+const hoverLegend2021 = function(event, d) {
+  const yearBars = svg.selectAll('.highlight')
+    .filter(e => e[0] !== '2021');
+
+  d3.select(this)
+      .style("opacity", .5)
+
+  yearBars.style("opacity", .1);
+}
+
+const hoverLegend2022 = function(event, d) {
+  const yearBars = svg.selectAll('.highlight')
+    .filter(e => e[0] !== '2022');
+
+  d3.select(this)
+      .style("opacity", .5)
+
+  yearBars.style("opacity", .1);
+}
+
+const hoverleave2020 = function(d) {
+
+    const yearBars = svg.selectAll('.highlight')
+    .filter(e => e[0] !== '2020');
+
+    d3.select(this)
+        .style("opacity", 1)
+
+    yearBars.style("opacity", 1);
+}
+
+const hoverleave2021 = function(d) {
+    const yearBars = svg.selectAll('.highlight')
+    .filter(e => e[0] !== '2021');
+
+    d3.select(this)
+        .style("opacity", 1)
+
+    yearBars.style("opacity", 1);
+}
+
+const hoverleave2022 = function(d) {
+    const yearBars = svg.selectAll('.highlight')
+    .filter(e => e[0] !== '2022');
+
+    d3.select(this)
+        .style("opacity", 1)
+
+    yearBars.style("opacity", 1);
+}
+
+
+//set legend
+svg
+.append("rect")
+    .attr("x", -(margin.left)*0.7)
+    .attr("y", -(margin.top/2))
+    .attr("width", 13)
+    .attr("height", 13)
+    .style("fill", "#0072BC")
+    .on("mouseover", hoverLegend2020)
+    .on("mousemove", mousemove)
+    .on("mouseleave", hoverleave2020);
+svg
+    .append("text")
+        .attr("class", "legend")
+        .attr("x", -(margin.left)*0.7+20)
+        .attr("y", -(margin.top/2.5))
+    .text("2020")
+svg
+    .append("rect")
+        .attr("x", -(margin.left)*0.7+60)
+        .attr("y", -(margin.top/2))
+        .attr("width", 13)
+        .attr("height", 13)
+        .style("fill", "#8EBEFF")
+        .on("mouseover", hoverLegend2021).on("mousemove", mousemove)
+  .on("mouseleave", hoverleave2021)
+svg
+    .append("text")
+        .attr("class", "legend")
+        .attr("x", -(margin.left)*0.7+80)
+        .attr("y", -(margin.top/2.5))
+    .text("2021")
+svg
+    .append("rect")
+        .attr("x", -(margin.left)*0.7+120)
+        .attr("y", -(margin.top/2))
+        .attr("width", 13)
+        .attr("height", 13)
+        .style("fill", "#6699CC")
+        .on("mouseover", hoverLegend2022).on("mousemove", mousemove)
+  .on("mouseleave", hoverleave2022)
+svg
+    .append("text")
+        .attr("class", "legend")
+        .attr("x", -(margin.left)*0.7+140)
+        .attr("y", -(margin.top/2.5))
+    .text("2022")
+})</script>
