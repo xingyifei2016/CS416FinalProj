@@ -49,6 +49,10 @@ text.copyright {
 .legend{
   font-size: 10px;
 }
+
+rect.highlighted {
+  fill: orange;
+}
 </style>
 <!-- Include d3 library -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -71,10 +75,10 @@ const svg = d3.select("#viz_container")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // parse the Data
-d3.csv("bar_grouped.csv")
+d3.csv("https://raw.githubusercontent.com/xingyifei2016/CS416FinalProj/main/bars_grouped.csv")
 .then(function(data){
 
-const sumbyRegionYear = d3.rollups(data, v => d3.sum(v, d => d.asylum_application), d => d.region, d => d.year)
+const sumbyRegionYear = d3.rollups(data, v => d3.sum(v, d => d.confirmed), d => d.region, d => d.year)
 
 const regionKey = Array.from(sumbyRegionYear).map(d => d[0])
 const yearKeys = Array.from(Array.from(sumbyRegionYear)[0][1]).map(d=>d[0])
@@ -82,7 +86,7 @@ const regionKeys = regionKey.sort(d3.ascending)
 
 // x scale and Axis
 const xScale = d3.scaleLinear()
-    .domain([0, d3.max(data.map(d => d.asylum_application))]).nice()
+    .domain([0, d3.max(data.map(d => d.confirmed))]).nice()
     .range([0, width]);
 svg
   .append('g')
@@ -108,7 +112,7 @@ const ySubgroups = d3.scaleBand()
 // color palette
 const color = d3.scaleOrdinal()
   .domain(yearKeys)
-  .range(['#0072BC','#8EBEFF'])
+  .range(['#0072BC','#8EBEFF', '#6699CC'])
 
 // set vertical grid line
 const GridLine = () => d3.axisBottom().scale(xScale);
@@ -185,6 +189,13 @@ svg
   .text("Displaced population")
 
 
+const hoverLegend = function(event, d) {
+  const yearBars = svg.selectAll('.highlight')
+    .filter(e => e[0] === d);
+
+  yearBars.classed('highlighted', true);
+}
+
 //set legend
 svg
 .append("rect")
@@ -192,13 +203,15 @@ svg
     .attr("y", -(margin.top/2))
     .attr("width", 13)
     .attr("height", 13)
-    .style("fill", "#0072BC");
+    .style("fill", "#0072BC")
+    .on("mouseover", mouseover).on("mousemove", mousemove)
+  .on("mouseleave", mouseleave);
 svg
     .append("text")
         .attr("class", "legend")
         .attr("x", -(margin.left)*0.7+20)
         .attr("y", -(margin.top/2.5))
-    .text("2019")
+    .text("2020")
 svg
     .append("rect")
         .attr("x", -(margin.left)*0.7+60)
@@ -206,10 +219,27 @@ svg
         .attr("width", 13)
         .attr("height", 13)
         .style("fill", "#8EBEFF")
+        .on("mouseover", mouseover).on("mousemove", mousemove)
+  .on("mouseleave", mouseleave)
 svg
     .append("text")
         .attr("class", "legend")
         .attr("x", -(margin.left)*0.7+80)
         .attr("y", -(margin.top/2.5))
-    .text("2020")
+    .text("2021")
+svg
+    .append("rect")
+        .attr("x", -(margin.left)*0.7+120)
+        .attr("y", -(margin.top/2))
+        .attr("width", 13)
+        .attr("height", 13)
+        .style("fill", "#6699CC")
+        .on("mouseover", mouseover).on("mousemove", mousemove)
+  .on("mouseleave", mouseleave)
+svg
+    .append("text")
+        .attr("class", "legend")
+        .attr("x", -(margin.left)*0.7+140)
+        .attr("y", -(margin.top/2.5))
+    .text("2022")
 })</script>
