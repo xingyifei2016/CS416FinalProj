@@ -1,23 +1,239 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>D3 Dropdown Bar Example</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-  </head>
-  <body>
-    <select id="dropdown"></select>
-    <script>
-      // Load the CSV data
-      d3.csv("data.csv").then(function(data) {
-        // Create the dropdown bar
-        var dropdown = d3.select("#dropdown");
-        dropdown.selectAll("option")
-          .data(data)
-          .enter()
-          .append("option")
-          .text(function(d) { return d.name; })
-          .attr("value", function(d) { return d.id; });
-      });
-    </script>
-  </body>
+<style>
+  rect {
+    fill: lightblue; 
+    stroke: black; 
+  } 
+  a {
+    font-family: Arial, sans-serif; /* change font */
+    text-decoration: none; /* remove underline */
+    display: block; /* change position to block to allow width and height adjustments */
+    width: 200px; /* set width */
+    height: 50px; /* set height */
+    background-color: blue; /* add background color */
+    color: white; /* add text color */
+    text-align: center; /* center text horizontally */
+    line-height: 50px; /* center text vertically */
+    transform: translate(250%, 980%);
+    bottom: 300;
+    position: fixed;
+  }
+
+  .b {
+    font-family: Arial, sans-serif; /* change font */
+    text-decoration: none; /* remove underline */
+    display: block; /* change position to block to allow width and height adjustments */
+    width: 200px; /* set width */
+    height: 50px; /* set height */
+    background-color: blue; /* add background color */
+    color: white; /* add text color */
+    text-align: center; /* center text horizontally */
+    line-height: 50px; /* center text vertically */
+    transform: translate(450%, 980%);
+    bottom: 300;
+    position: fixed;
+  }
+
+</style>
+<head>
+  <meta charset="utf-8">
+  <title>U.S. State 2022 COVID Confirmed Cases</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <h2>U.S. State 2022 COVID Confirmed Cases</h2>
+  <div>
+    <label for="province">Select Province/State:</label>
+    <select id="province"></select>
+  </div>
+  <div>
+    <label for="admin">Select County:</label>
+    <select id="admin"></select>
+  </div>
+
+  <p>Now that you have seen how the global infection and death rate related to COVID19, lets focus on the United States and look at the number of confirmed cases in 2022. By entering the State Name first (You need to reselect Alabama in order for the county to show up), and then selecting a county name, you will be shown a histogram for the total number of confirmed cases for year 2022. Hopefully, through this data, you will have a better understanding of the infection rate of COVID in the United States. This may take some time to load on your first try.</p>
+  <a href="3.html">Go Back</a> <a class=b href="5.html">Next</a>
+  <svg width="1000" height="300"></svg>
+  <script>
+    // Load the CSV file
+    d3.csv("https://raw.githubusercontent.com/xingyifei2016/CS416FinalProj/main/us_time.csv").then(function(data) {
+      
+      let options = [...new Set(data.map(d => d.Province_State))];
+
+      // Extract unique Province_State values (preserving order)
+      var provinces = Array.from(d3.map(data, function(d) { return d.Province_State; }).values());
+      
+      // Populate the dropdown menu with unique Province_State values
+      d3.select("#province")
+        .selectAll("option")
+        .data(options)
+        .enter()
+        .append("option")
+        .text(function(d) { return d; })
+        .attr("value", function(d) { return d; });
+
+      // Get the selected Province_State value
+      var selectedProvince = "California";
+      // Extract unique Admin2 values from the filtered data
+      var width = 1000;
+      var height = 300;
+      var margin = 500;
+
+      d3.select("svg").remove();
+      d3.select("body").append("svg").attr("width", width+2*margin).attr("height", height+2*margin).append("g")
+                .attr("transform", "translate(300,1000)");
+
+      // Get the selected Province_State value
+      var selectedAdmin = "Alameda";
+      
+      // Filter the data to include only rows with the selected Province_State value
+      var filteredData = data.filter(function(d) {
+        return d.Province_State === selectedProvince && d.Admin2 === selectedAdmin;
+      })[0];
+
+
+      var dateValuePairs = Object.keys(filteredData)
+        .filter(function(key) { return /^\d{1,2}\/\d{1,2}\/\d{2}$/.test(key); })
+        .reduce(function(obj, key) { obj[key] = filteredData[key]; return obj; }, {});
+
+
+      // Parse the dates and values
+      var parseDate = d3.timeParse("%m/%d/%y");
+      var formatDate = d3.timeFormat("%m/%d/%y");
+      var filteredData = Object.keys(dateValuePairs)
+        .filter(function(date) { return parseDate(date).getFullYear() === 2022; })
+        .map(function(date) { return { date: formatDate(parseDate(date)), value: dateValuePairs[date] }; });
+
+      var x = d3.scaleBand()
+                  .domain(d3.map(filteredData, function(d) { return d.date; }))
+                  .range([0, width]);
+      var y = d3.scaleLinear()
+                  .domain([0, d3.max(d3.extent(filteredData, function(d) { return d.value; }))])
+                  .range([height, 0]);
+
+
+
+      d3.select('svg').selectAll("rect")
+           .data(filteredData)
+           .enter()
+           .append("rect")
+           .attr("x", function(d, i) { console.log(d.date); return x.bandwidth()*i+300; })
+           .attr("y", function(d) { return y(d.value); })
+           .attr("width", x.bandwidth())
+           .attr("height", function(d) { return height - y(d.value)+110; })
+           .attr('style', 'fill: steelblue;');
+
+      d3.select("svg").append("g").attr("transform", "translate(300,110)").call(d3.axisLeft(y));
+
+
+      d3.select("svg").append("g").attr("transform", "translate(300,410)").call(d3.axisBottom(x).tickValues(["01/01/22", "02/01/22", "03/01/22", , "04/01/22", "05/01/22", "06/01/22", "07/01/22", "08/01/22", "09/01/22", "10/01/22", "11/01/22", "12/01/22"])).selectAll("text")  
+          .style("text-anchor", "end")
+          .attr("dx", "-.8em")
+          .attr("dy", ".15em")
+          .attr("transform", "rotate(-65)");
+      
+      // Handle changes in the dropdown menu
+      d3.select("#province")
+        .on("change", function() {
+          
+          // Get the selected Province_State value
+          var selectedProvince = d3.select(this).property("value");
+          
+          // Filter the data to include only rows with the selected Province_State value
+          var filteredData = data.filter(function(d) {
+            return d.Province_State === selectedProvince;
+          });
+          
+          // Extract unique Admin2 values from the filtered data
+          var admins = d3.map(filteredData, function(d){return d.Admin2;}).values();
+          
+          // Populate the second dropdown menu with unique Admin2 values
+          d3.select("#admin")
+            .selectAll("option")
+            .remove()
+            .exit()
+            .data(admins)
+            .enter()
+            .append("option")
+            .text(function(d) { return d; })
+            .attr("value", function(d) { return d; });
+
+
+          d3.select("#admin")
+          .on("change", function() {
+
+
+            var width = 1000;
+            var height = 300;
+            var margin = 500;
+
+            d3.select("svg").remove();
+            d3.select("body").append("svg").attr("width", width+2*margin).attr("height", height+2*margin).append("g")
+                      .attr("transform", "translate(300,1000)");
+
+            // Get the selected Province_State value
+            var selectedAdmin = d3.select(this).property("value");
+            
+            // Filter the data to include only rows with the selected Province_State value
+            var filteredData = data.filter(function(d) {
+              return d.Province_State === selectedProvince && d.Admin2 === selectedAdmin;
+            })[0];
+
+
+            var dateValuePairs = Object.keys(filteredData)
+              .filter(function(key) { return /^\d{1,2}\/\d{1,2}\/\d{2}$/.test(key); })
+              .reduce(function(obj, key) { obj[key] = filteredData[key]; return obj; }, {});
+
+
+            // Parse the dates and values
+            var parseDate = d3.timeParse("%m/%d/%y");
+            var formatDate = d3.timeFormat("%m/%d/%y");
+            var filteredData = Object.keys(dateValuePairs)
+              .filter(function(date) { return parseDate(date).getFullYear() === 2022; })
+              .map(function(date) { return { date: formatDate(parseDate(date)), value: dateValuePairs[date] }; });
+
+            var x = d3.scaleBand()
+                        .domain(d3.map(filteredData, function(d) { return d.date; }))
+                        .range([0, width]);
+            var y = d3.scaleLinear()
+                        .domain([0, d3.max(d3.extent(filteredData, function(d) { return d.value; }))])
+                        .range([height, 0]);
+
+            console.log(y);
+
+
+            d3.select('svg').selectAll("rect")
+                 .data(filteredData)
+                 .enter()
+                 .append("rect")
+                 .attr("x", function(d, i) { console.log(d.date); return x.bandwidth()*i+300; })
+                 .attr("y", function(d) { return y(d.value); })
+                 .attr("width", x.bandwidth())
+                 .attr("height", function(d) { return height - y(d.value)+110; })
+                 .attr('style', 'fill: steelblue;');
+
+            d3.select("svg").append("g").attr("transform", "translate(300,110)").call(d3.axisLeft(y));
+
+
+            d3.select("svg").append("g").attr("transform", "translate(300,410)").call(d3.axisBottom(x).tickValues(["01/01/22", "02/01/22", "03/01/22", , "04/01/22", "05/01/22", "06/01/22", "07/01/22", "08/01/22", "09/01/22", "10/01/22", "11/01/22", "12/01/22"])).selectAll("text")  
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-65)");
+    
+
+          });
+
+
+
+
+        });
+
+        
+
+
+    });
+  </script>
+</body>
 </html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<style>
+  rect {
+    fill: lightblue; 
+    stroke: black; 
+  } 
+  a {
+    font-family: Arial, sans-serif; /* change font */
+    text-decoration: none; /* remove underline */
+    display: block; /* change position to block to allow width and height adjustments */
+    width: 200px; /* set width */
+    height: 50px; /* set height */
+    background-color: blue; /* add background color */
+    color: white; /* add text color */
+    text-align: center; /* center text horizontally */
+    line-height: 50px; /* center text vertically */
+    transform: translate(250%, 980%);
+    bottom: 300;
+    position: fixed;
+  }
+
+  .b {
+    font-family: Arial, sans-serif; /* change font */
+    text-decoration: none; /* remove underline */
+    display: block; /* change position to block to allow width and height adjustments */
+    width: 200px; /* set width */
+    height: 50px; /* set height */
+    background-color: blue; /* add background color */
+    color: white; /* add text color */
+    text-align: center; /* center text horizontally */
+    line-height: 50px; /* center text vertically */
+    transform: translate(450%, 980%);
+    bottom: 300;
+    position: fixed;
+  }
+
+  .slidecontainer {
+        width: 100%;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .slider {
+        -webkit-appearance: none;
+        width: 30%;
+        height: 25px;
+        position: absolute;
+        left: 35%;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+      }
+
+      .slider:hover {
+        opacity: 1;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #000000;
+        cursor: pointer;
+      }
+
+      .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #04AA6D;
+        cursor: pointer;
+      }
+
+      .flex {
+        width: 500px;
+        height: 80px;
+        line-height: 80px;
+        background-color: #eeeeee;
+        position: absolute;
+        top: 65%;
+        left: 45%;
+        margin: -25px 0 0 -150px;
+      }
+      .flex ul {
+        display: flex;
+        padding: 0;
+        margin: 0;
+        box-shadow: 0 10px 20px 0 #cccccc;
+      }
+      .flex ul li {
+        flex: 1;
+        list-style: none;
+        text-align: center;
+        position: relative;
+        font-size: 20px;
+        font-weight: bold;
+        transition: 0.3s ease;
+        cursor: pointer;
+        user-select: none;
+      }
+      .flex ul li:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+        color: #65bcc9;
+      }
+      .flex ul li:hover:nth-of-type(2) ~ .bar {
+        left: 20%;
+      }
+      .flex ul li:hover:nth-of-type(3) ~ .bar {
+        left: 40%;
+      }
+      .flex ul li:hover:nth-of-type(4) ~ .bar {
+        left: 60%;
+      }
+      .flex ul li:hover:nth-of-type(5) ~ .bar {
+        left: 80%;
+      }
+      .flex ul .bar {
+        width: 20%;
+        background-color: #2696a6;
+        height: 5px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        transition: 0.3s ease;
+      }
+      
+      .scene {
+        display: none;
+      }
+      
+      .scene.active {
+        display: block;
+      }
+
+      .container {
+        width: 100%;
+        height: 10vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      pl {
+        text-align: center;
+      }
+
+      .columns {
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .column {
+        flex: 1;
+        margin-right: 20px; /* Add some space between columns */
+      }
+
+      ul {
+        list-style-type: square;
+      }
+
+      ul li.hidden {
+        list-style: none;
+      }
+
+      .circlelow {
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        border-radius: 50%;
+        background-color: #008000;
+      }
+
+      .circlemed {
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        border-radius: 50%;
+        background-color: #FFBF00;
+      }
+
+      .circlehigh {
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        border-radius: 50%;
+        background-color: #FF0000;
+      }
+
+</style>
+<head>
+  <meta charset="utf-8">
+  <title>U.S. State 2022 COVID Confirmed Cases</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+<h1>Activities associated with risk of contracting COVID</h1>
+        <div class="slidecontainer">
+          <input type="range" min="1" max="100" value="0" class="slider" id="myRange">
+          <div class="container">
+          <pl><span id="demo"></span></pl>
+        </div>
+        </div>
+        <p>Now that you have seen the severity of COVID19, here are activities that will increase or decrease your chances of getting COVID19. Please be wary of this global pandemic!</p>
+        <div class="columns">
+          <div class="column">
+            <p id="low-risk" class="hidden">
+              <span class="circlelow">Takeout Food</span>
+              <span class="circlelow">Outdoor Exercise</span>
+              <span class="circlelow">Gas/petrol station</span>
+              <span class="circlelow">Golf</span>
+              <span class="circlelow">Bathroom Use</span>
+              <span class="circlelow">Playdates</span>
+              <span class="circlelow">Camping</span>
+              <span class="circlelow">Beach</span>
+              <span class="circlelow">Outdoor Dining</span>
+              <span class="circlelow">Driving</span>
+              <span class="circlelow">Taking a walk</span>
+              <span class="circlelow">Grocery shopping</span>
+              <span class="circlelow">Seeing a doctor</span>
+              <br>
+              Low-risk activities for COVID-19 generally can be done alone or with members of your household, without coming into close contact with people outside of your household.
+              They typically take place in outdoor or well-ventilated indoor spaces, where the risk of transmission is lower than in crowded or poorly ventilated spaces.
+              They also involve minimal physical contact with surfaces or objects that may be contaminated with the virus.
+              They do not involve high-intensity physical activity, which can increase the risk of transmitting the virus through respiratory droplets.
+              They can be easily modified to maintain physical distancing and other recommended safety measures, such as wearing masks or avoiding large gatherings.
+            </p>
+          </div>
+          <div class="column">
+            <p id="medium-risk" class="hidden">
+                <span class="circlemed">Staying at a hotel</span>
+                <span class="circlemed">Small backyard barbecue</span>
+                <span class="circlemed">Small outdoor picnic</span>
+                <span class="circlemed">Use a public restroom</span>
+                <span class="circlemed">Visit a mall</span>
+                <span class="circlemed">Small dinner party (indoors)</span>
+                <span class="circlemed">Public pool</span>
+                <span class="circlemed">Getting a haircut</span>
+                <span class="circlemed">Casino</span>
+                <span class="circlemed">Driving</span>
+                <span class="circlemed">Bowling</span>
+                <span class="circlemed">Exercising at a gym</span>
+                <span class="circlemed">Airplane</span>
+              <br>
+              Medium-risk activities for COVID-19 generally involve close contact with people outside of your household, but for a shorter duration of time and in a larger, well-ventilated space.
+              They also take place in indoor spaces, where the risk of transmission is higher than in outdoor spaces.
+              They may involve physical activity that increases the risk of transmitting the virus through respiratory droplets, such as singing, shouting, or playing sports.
+              They may also involve shared objects or surfaces, such as equipment or utensils, that can be contaminated with the virus.
+              They may require some modification of physical distancing and other recommended safety measures, such as wearing masks or avoiding large gatherings.
+          </p>
+          </div>
+          <div class="column">
+            <p id="high-risk" class="hidden">
+              <span class="circlehigh">Attend a wedding</span>
+              <span class="circlehigh">Hug or shake hands</span>
+              <span class="circlehigh">Stop wearing a mask</span>
+              <span class="circlehigh">Amusement park</span>
+              <span class="circlehigh">Buffet</span>
+              <span class="circlehigh">See a concert</span>
+              <span class="circlehigh">Indoor party</span>
+              <span class="circlehigh">Sports stadium</span>
+              <span class="circlehigh">Going to a church</span>
+              <span class="circlehigh">Indoor bar</span>
+              <span class="circlehigh">Nightclub</span>
+              <span class="circlehigh">Not washing hand</span>
+              <br>
+              High-risk activities for COVID-19 are those that have a greater likelihood of transmitting the virus and are associated with a higher risk of infection. High-risk activities typically involve close contact with other people who may be infected with the virus. This can occur in crowded indoor spaces, or in situations where people are in close proximity to each other for an extended period of time. Indoor spaces with poor ventilation are more likely to allow the virus to spread, as the air is not being circulated or filtered effectively. This can include crowded indoor areas, such as bars or nightclubs, or poorly ventilated public transportation. High-risk activities often involve large groups of people, such as concerts, sporting events, or weddings. These events can be difficult to manage in terms of physical distancing and mask-wearing, and can increase the risk of transmission. Activities that involve sharing objects or equipment, such as sports equipment or musical instruments, can increase the risk of transmission if the objects are not properly cleaned or disinfected.
+            </p>
+          </div>
+        <a href="4.html">Go Back</a> <a class=b href="index.html">Restart</a>
+        </div>
+
+        <script>
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = "Low Risk";
+
+        const lowText = document.getElementById("low-risk");
+        const medText = document.getElementById("medium-risk");
+        const highText = document.getElementById("high-risk");
+        lowText.classList.remove("hidden");
+
+
+
+
+        slider.oninput = function() {
+          if (this.value <= 33) {
+            output.innerHTML = "Low Risk";
+            lowText.classList.remove("hidden");
+            medText.classList.add("hidden");
+            highText.classList.add("hidden");
+          } else if (this.value <=66) {
+            output.innerHTML = "Medium Risk";
+            lowText.classList.add("hidden");
+            medText.classList.remove("hidden");
+            highText.classList.add("hidden");
+          } else {
+            output.innerHTML = "High Risk";
+            lowText.classList.add("hidden");
+            medText.classList.add("hidden");
+            highText.classList.remove("hidden");
+          }
+
+
+        }
+        </script>
+</body>
+</html>
