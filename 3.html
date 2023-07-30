@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <style> 
+
+      rect {
+    fill: lightblue; 
+    stroke: black; 
+  } 
+          ap {
+            font-family: Arial, sans-serif; /* change font */
+            text-decoration: none; /* remove underline */
+            width: 400px; /* set width */
+            height: 50px; /* set height */
+            background-color: orange; /* add background color */
+            color: white; /* add text color */
+            text-align: center; /* center text horizontally */
+            line-height: 50px; /* center text vertically */
+            transform: translateX(150%);
+            bottom: 300;
+            position: fixed;
+          }
+
+        a {
+    font-family: Arial, sans-serif; /* change font */
+    text-decoration: none; /* remove underline */
+    display: block; /* change position to block to allow width and height adjustments */
+    width: 200px; /* set width */
+    height: 50px; /* set height */
+    background-color: blue; /* add background color */
+    color: white; /* add text color */
+    text-align: center; /* center text horizontally */
+    line-height: 50px; /* center text vertically */
+    transform: translate(250%, 1020%);
+    bottom: 300;
+    position: fixed;
+  }
+  .b {
+    font-family: Arial, sans-serif; /* change font */
+    text-decoration: none; /* remove underline */
+    display: block; /* change position to block to allow width and height adjustments */
+    width: 200px; /* set width */
+    height: 50px; /* set height */
+    background-color: blue; /* add background color */
+    color: white; /* add text color */
+    text-align: center; /* center text horizontally */
+    line-height: 50px; /* center text vertically */
+    transform: translate(450%, 1020%);
+    bottom: 300;
+    position: fixed;
+  }
+        </style>
+
+        <h1>Global daily deaths (2020)</h1>
+        <script src='https://d3js.org/d3.v5.min.js'></script>
+  
+        <body>
+        <ap>Daily deaths have increasing trend for entire 2020</ap>
+        <a href="2.html">Go Back</a> <a class=b href="4.html">Next</a>
+        <svg width=300 height=300>
+        </svg>
+        <script>
+
+
+        cases = [17, 110, 313, 648, 1131, 1790, 2375, 2815, 3132, 3615, 5034, 8184, 15301, 29516, 52290, 84439, 122373, 159995, 197203, 231265, 265145, 296600, 325680, 354792, 381253, 405527, 430864, 457370, 482951, 508598, 538946, 564783, 590505, 617327, 646332, 674859, 704138, 738694, 770106, 800805, 833928, 866603, 896987, 926685, 958484, 987400, 1013352, 1041050, 1069741, 1095186, 1119837, 1147556, 1175301, 1201160, 1230311, 1262180, 1293432, 1328239, 1373171, 1417763, 1465636, 1518969, 1575838, 1629565, 1684942, 1747269, 1807421, 1866852, 1921079, 1987480, 2047456, 2113101, 2191225]
+        date = ['Jan 22, 2020', 'Jan 27, 2020', 'Feb 01, 2020', 'Feb 06, 2020', 'Feb 11, 2020', 'Feb 16, 2020', 'Feb 21, 2020', 'Feb 26, 2020', 'Mar 02, 2020', 'Mar 07, 2020', 'Mar 12, 2020', 'Mar 17, 2020', 'Mar 22, 2020', 'Mar 27, 2020', 'Apr 01, 2020', 'Apr 06, 2020', 'Apr 11, 2020', 'Apr 16, 2020', 'Apr 21, 2020', 'Apr 26, 2020', 'May 01, 2020', 'May 06, 2020', 'May 11, 2020', 'May 16, 2020', 'May 21, 2020', 'May 26, 2020', 'May 31, 2020', 'Jun 05, 2020', 'Jun 10, 2020', 'Jun 15, 2020', 'Jun 20, 2020', 'Jun 25, 2020', 'Jun 30, 2020', 'Jul 05, 2020', 'Jul 10, 2020', 'Jul 15, 2020', 'Jul 20, 2020', 'Jul 25, 2020', 'Jul 30, 2020', 'Aug 04, 2020', 'Aug 09, 2020', 'Aug 14, 2020', 'Aug 19, 2020', 'Aug 24, 2020', 'Aug 29, 2020', 'Sep 03, 2020', 'Sep 08, 2020', 'Sep 13, 2020', 'Sep 18, 2020', 'Sep 23, 2020', 'Sep 28, 2020', 'Oct 03, 2020', 'Oct 08, 2020', 'Oct 13, 2020', 'Oct 18, 2020', 'Oct 23, 2020', 'Oct 28, 2020', 'Nov 02, 2020', 'Nov 07, 2020', 'Nov 12, 2020', 'Nov 17, 2020', 'Nov 22, 2020', 'Nov 27, 2020', 'Dec 02, 2020', 'Dec 07, 2020', 'Dec 12, 2020', 'Dec 17, 2020', 'Dec 22, 2020', 'Dec 27, 2020', 'Jan 01, 2021', 'Jan 06, 2021', 'Jan 11, 2021', 'Jan 16, 2021']
+
+        onMouseOut = function(d, i) {
+          d3.select(this).attr('style', 'fill: steelblue;');
+          d3.select("#toptext").text(`Daily deaths - global: ${0}`);
+        }
+
+        onMouseOver = function(d, i) {
+          d3.select(this).attr('style', 'fill: orange;');
+          d3.select("#toptext").text(`Daily deaths - global: ${cases[i]}`);
+        }
+
+
+        var width = 1000;
+        var height = 400;
+        var margin = 500;
+        var svg1 = d3.select('svg')
+                      .attr("width", width + margin + margin)
+                      .attr("height", height + margin + margin)
+                      .append("g")
+                      .attr("transform", "translate(300,10)");
+
+        const text = svg1
+            .append('text')
+            .attr("id", 'toptext')
+            .attr("x", width - 300)
+            .attr("y", 80)
+            .attr("dx", "-19em")
+            .attr("dy", ".15em")
+            .attr("font-family", "sans-serif")
+            .text("Daily deaths - global: 0");
+
+        var x = d3.scaleBand()
+                    .domain(date)
+                    .range([0, width]);
+        var y = d3.scaleLinear()
+                    .domain([0, d3.max(cases)])
+                    .range([height, 0]);
+
+        svg1.selectAll("rect")
+             .data(cases)
+             .enter()
+             .append("rect")
+             .attr("x", function(d, i) { return x.bandwidth()*i; })
+             .attr("y", function(d) { return y(d); })
+             .attr("width", x.bandwidth())
+             .attr("height", function(d) { return height - y(d); })
+             .attr('style', 'fill: steelblue;')
+             .on('mouseover', onMouseOver)
+             .on('mouseout', onMouseOut);
+
+        d3.select("svg").append("g").attr("transform", "translate(300,10)").call(d3.axisLeft(y));
+
+        d3.select("svg").append("g").attr("transform", "translate(300,410)").call(d3.axisBottom(x).ticks(50)).selectAll("text")  
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-65)");
+        </script>
+        </body>
+      </div>
+
+</html>

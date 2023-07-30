@@ -1,0 +1,128 @@
+<html>
+<script src='https://d3js.org/d3.v5.min.js'></script>
+<style> 
+
+  rect {
+    fill: lightblue; 
+    stroke: black; 
+  } 
+
+  a {
+    font-family: Arial, sans-serif; /* change font */
+    text-decoration: none; /* remove underline */
+    display: block; /* change position to block to allow width and height adjustments */
+    width: 200px; /* set width */
+    height: 50px; /* set height */
+    background-color: blue; /* add background color */
+    color: white; /* add text color */
+    text-align: center; /* center text horizontally */
+    line-height: 50px; /* center text vertically */
+    transform: translateX(250%);
+    bottom: 300;
+    position: fixed;
+  }
+  .b {
+    font-family: Arial, sans-serif; /* change font */
+    text-decoration: none; /* remove underline */
+    display: block; /* change position to block to allow width and height adjustments */
+    width: 200px; /* set width */
+    height: 50px; /* set height */
+    background-color: blue; /* add background color */
+    color: white; /* add text color */
+    text-align: center; /* center text horizontally */
+    line-height: 50px; /* center text vertically */
+    transform: translateX(450%);
+    bottom: 300;
+    position: fixed;
+  }
+
+          ap {
+            font-family: Arial, sans-serif; /* change font */
+            text-decoration: none; /* remove underline */
+            width: 800px; /* set width */
+            height: 50px; /* set height */
+            background-color: orange; /* add background color */
+            color: white; /* add text color */
+            text-align: center; /* center text horizontally */
+            line-height: 50px; /* center text vertically */
+            transform: translateX(50%);
+            bottom: 800;
+            position: fixed;
+          }
+
+</style>
+<h1>Global daily new cases (2020)</h1>
+<body><ap>Daily cases generally have increasing trend for entire 2020, while stagnant for the month of September. </ap><a href="index.html">Go Back</a> <a class=b href="3.html">Next</a>
+        <svg width=300 height=300>
+        </svg>
+        <script>
+
+
+        cases = [971, 4836, 14385, 29784, 39829, 59331, 55361, 47676, 42808, 52006, 88316, 171450, 317761, 538851, 789704, 1030019, 1245201, 1385220, 1536027, 1665136, 1807382, 1928024, 2041743, 2154893, 2278846, 2303712, 2375823, 2416087, 2542791, 2655496, 2800194, 2993681, 3250197, 3535394, 3804172, 4172338, 4438322, 4746756, 4976094, 5173838, 5419845, 5537573, 5542864, 5630574, 5752235, 5813531, 5838563, 5965651, 6009816, 5951691, 6055667, 6235990, 6397256, 6667376, 7178603, 7862872, 8656842, 9655507, 10831091, 11633606, 12298079, 12980827, 13169620, 13205248, 13528453, 13845779, 14127200, 14459399, 14589613, 14979680, 15239977, 16184648, 16770878]
+        date = ['Jan 22, 2020', 'Jan 27, 2020', 'Feb 01, 2020', 'Feb 06, 2020', 'Feb 11, 2020', 'Feb 16, 2020', 'Feb 21, 2020', 'Feb 26, 2020', 'Mar 02, 2020', 'Mar 07, 2020', 'Mar 12, 2020', 'Mar 17, 2020', 'Mar 22, 2020', 'Mar 27, 2020', 'Apr 01, 2020', 'Apr 06, 2020', 'Apr 11, 2020', 'Apr 16, 2020', 'Apr 21, 2020', 'Apr 26, 2020', 'May 01, 2020', 'May 06, 2020', 'May 11, 2020', 'May 16, 2020', 'May 21, 2020', 'May 26, 2020', 'May 31, 2020', 'Jun 05, 2020', 'Jun 10, 2020', 'Jun 15, 2020', 'Jun 20, 2020', 'Jun 25, 2020', 'Jun 30, 2020', 'Jul 05, 2020', 'Jul 10, 2020', 'Jul 15, 2020', 'Jul 20, 2020', 'Jul 25, 2020', 'Jul 30, 2020', 'Aug 04, 2020', 'Aug 09, 2020', 'Aug 14, 2020', 'Aug 19, 2020', 'Aug 24, 2020', 'Aug 29, 2020', 'Sep 03, 2020', 'Sep 08, 2020', 'Sep 13, 2020', 'Sep 18, 2020', 'Sep 23, 2020', 'Sep 28, 2020', 'Oct 03, 2020', 'Oct 08, 2020', 'Oct 13, 2020', 'Oct 18, 2020', 'Oct 23, 2020', 'Oct 28, 2020', 'Nov 02, 2020', 'Nov 07, 2020', 'Nov 12, 2020', 'Nov 17, 2020', 'Nov 22, 2020', 'Nov 27, 2020', 'Dec 02, 2020', 'Dec 07, 2020', 'Dec 12, 2020', 'Dec 17, 2020', 'Dec 22, 2020', 'Dec 27, 2020', 'Jan 01, 2021', 'Jan 06, 2021', 'Jan 11, 2021', 'Jan 16, 2021']
+
+        onMouseOut = function(d, i) {
+          d3.select(this).attr('style', 'fill: steelblue;');
+          d3.select("#toptext").text(`Daily new cases - global: ${0}`);
+        }
+
+        onMouseOver = function(d, i) {
+          d3.select(this).attr('style', 'fill: orange;');
+          d3.select("#toptext").text(`Daily new cases - global: ${cases[i]}`);
+        }
+
+
+        var width = 1000;
+        var height = 400;
+        var margin = 500;
+        var svg = d3.select("svg");
+
+        // Remove all child elements of the SVG
+        svg.selectAll("*").remove();
+
+        var svg = d3.select("svg")
+                      .attr("width", width + margin + margin)
+                      .attr("height", height + margin + margin)
+                      .append("g")
+                      .attr("transform", "translate(300,10)");
+
+        const text = svg
+            .append('text')
+            .attr("id", 'toptext')
+            .attr("x", width - 300)
+            .attr("y", 80)
+            .attr("dx", "-19em")
+            .attr("dy", ".15em")
+            .attr("font-family", "sans-serif")
+            .text("Daily new cases - global: 0");
+
+        var x = d3.scaleBand()
+                    .domain(date)
+                    .range([0, width]);
+        var y = d3.scaleLinear()
+                    .domain([0, d3.max(cases)])
+                    .range([height, 0]);
+
+        svg.selectAll("rect")
+             .data(cases)
+             .enter()
+             .append("rect")
+             .attr("x", function(d, i) { return x.bandwidth()*i; })
+             .attr("y", function(d) { return y(d); })
+             .attr("width", x.bandwidth())
+             .attr("height", function(d) { return height - y(d); })
+             .attr('style', 'fill: steelblue;')
+             .on('mouseover', onMouseOver)
+             .on('mouseout', onMouseOut);
+
+        d3.select("svg").append("g").attr("transform", "translate(300,10)").call(d3.axisLeft(y));
+
+        d3.select("svg").append("g").attr("transform", "translate(300,410)").call(d3.axisBottom(x).ticks(50)).selectAll("text")  
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-65)");
+
+        </script>
+        </body>
+</html>
